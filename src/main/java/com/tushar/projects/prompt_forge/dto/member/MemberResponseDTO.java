@@ -5,11 +5,11 @@ import com.tushar.projects.prompt_forge.enums.ProjectRole;
 import java.time.Instant;
 
 public record MemberResponseDTO(
-        Long id,
+        Long userId,
         String email,
         String name,
         String avatarUrl,
-        ProjectRole role,
+        ProjectRole projectRole,
         Instant invitedAt
 ) {
 

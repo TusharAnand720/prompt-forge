@@ -10,9 +10,9 @@ public interface ProjectMemberService {
 
     List<MemberResponseDTO> getMembers(Long projectId, Long userId);
 
-    MemberResponseDTO inviteMember(String projectId, InviteMemberRequestDTO request, Long userId);
+    MemberResponseDTO inviteMember(Long projectId, InviteMemberRequestDTO request, Long userId);
 
-    MemberResponseDTO updateMemberRole(String projectId, String memberId, UpdateMemberRoleRequestDTO request, Long userId);
+    MemberResponseDTO updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequestDTO request, Long userId);
 
-    MemberResponseDTO deleteProjectMember(String projectId, String memberId, Long userId);
+    MemberResponseDTO deleteProjectMember(Long projectId, Long memberId, Long userId);
 }

@@ -23,25 +23,25 @@ public class ProjectMemberController {
 
     @GetMapping
     public ResponseEntity<List<MemberResponseDTO>> getProjectMember(@PathVariable Long projectId) {
-        Long userId = 0L;
+        Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.getMembers(projectId, userId));
     }
 
     @PostMapping
-    public ResponseEntity<MemberResponseDTO> inviteMember(@PathVariable String projectId, @RequestBody InviteMemberRequestDTO request) {
-        Long userId = 0L;
+    public ResponseEntity<MemberResponseDTO> inviteMember(@PathVariable Long projectId, @RequestBody InviteMemberRequestDTO request) {
+        Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED).body(projectMemberService.inviteMember(projectId, request, userId));
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDTO> updateMemberRole(@PathVariable String projectId, @PathVariable String memberId, @RequestBody UpdateMemberRoleRequestDTO request) {
-        Long userId = 0L;
+    public ResponseEntity<MemberResponseDTO> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId, @RequestBody UpdateMemberRoleRequestDTO request) {
+        Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request, userId));
     }
 
     @DeleteMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDTO> deleteMember(@PathVariable String projectId, @PathVariable String memberId) {
-        Long userId = 0L;
+    public ResponseEntity<MemberResponseDTO> deleteMember(@PathVariable Long projectId, @PathVariable Long memberId) {
+        Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.deleteProjectMember(projectId, memberId, userId));
     }
 

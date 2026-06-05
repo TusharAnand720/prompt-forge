@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -37,7 +38,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponseDTO getUserProjectById(Long id, Long userId) {
-        return null;
+        Project project = getAccessibleProjectById(id, userId);
+        return projectMapper.toProjectResponseDTO(project);
     }
 
     @Override
@@ -52,18 +54,27 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectRepository.save(project);
 
-        System.out.println("Project ID : " + project.getId());
-
         return projectMapper.toProjectResponseDTO(project);
     }
 
     @Override
     public ProjectResponseDTO updateProject(Long id, ProjectRequestDTO projectRequestDTO, Long userId) {
-        return null;
+        Project project = getAccessibleProjectById(id, userId);
+        project.setName(projectRequestDTO.name());
+        project = projectRepository.save(project);
+        return projectMapper.toProjectResponseDTO(project);
     }
 
     @Override
     public void deleteProject(Long id, Long userId) {
+        Project project = getAccessibleProjectById(id, userId);
+        project.setDeletedAt(Instant.now());
+        projectRepository.save(project);
+    }
 
+    // === Internal Functions ===
+
+    public Project getAccessibleProjectById(Long projectId, Long userId) {
+        return projectRepository.findAccessibleProjectById(projectId, userId).orElseThrow();
     }
 }
