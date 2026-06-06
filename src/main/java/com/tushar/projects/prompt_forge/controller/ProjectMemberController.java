@@ -4,6 +4,7 @@ import com.tushar.projects.prompt_forge.dto.member.InviteMemberRequestDTO;
 import com.tushar.projects.prompt_forge.dto.member.MemberResponseDTO;
 import com.tushar.projects.prompt_forge.dto.member.UpdateMemberRoleRequestDTO;
 import com.tushar.projects.prompt_forge.service.ProjectMemberService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,13 +29,15 @@ public class ProjectMemberController {
     }
 
     @PostMapping
-    public ResponseEntity<MemberResponseDTO> inviteMember(@PathVariable Long projectId, @RequestBody InviteMemberRequestDTO request) {
+    public ResponseEntity<MemberResponseDTO> inviteMember(@PathVariable Long projectId,
+                                                          @RequestBody @Valid InviteMemberRequestDTO request) {
         Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED).body(projectMemberService.inviteMember(projectId, request, userId));
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDTO> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId, @RequestBody UpdateMemberRoleRequestDTO request) {
+    public ResponseEntity<MemberResponseDTO> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId,
+                                                              @RequestBody @Valid UpdateMemberRoleRequestDTO request) {
         Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request, userId));
     }
@@ -45,6 +48,4 @@ public class ProjectMemberController {
         projectMemberService.removeProjectMember(projectId, memberId, userId);
         return ResponseEntity.noContent().build();
     }
-
-
 }

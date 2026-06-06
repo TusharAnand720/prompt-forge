@@ -7,6 +7,7 @@ import com.tushar.projects.prompt_forge.entity.Project;
 import com.tushar.projects.prompt_forge.entity.ProjectMember;
 import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
 import com.tushar.projects.prompt_forge.entity.User;
+import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.mapper.ProjectMemberMapper;
 import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
 import com.tushar.projects.prompt_forge.reposityory.ProjectRepository;
@@ -113,6 +114,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     // === Internal Functions ===
 
     public Project getAccessibleProjectById(Long projectId, Long userId) {
-        return projectRepository.findAccessibleProjectById(projectId, userId).orElseThrow();
+        return projectRepository.findAccessibleProjectById(projectId, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("projectId-userId", projectId + "-" + userId));
     }
 }

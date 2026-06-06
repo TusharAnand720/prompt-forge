@@ -4,6 +4,7 @@ import com.tushar.projects.prompt_forge.dto.project.ProjectRequestDTO;
 import com.tushar.projects.prompt_forge.dto.project.ProjectResponseDTO;
 import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponseDTO;
 import com.tushar.projects.prompt_forge.service.ProjectService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +35,7 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody ProjectRequestDTO projectRequest) {
+    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody @Valid ProjectRequestDTO projectRequest) {
         Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectService.createProject(projectRequest, userId));
@@ -42,7 +43,7 @@ public class ProjectController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id,
-                                                            @RequestBody ProjectRequestDTO projectRequestDTO) {
+                                                            @RequestBody @Valid ProjectRequestDTO projectRequestDTO) {
         Long userId = 1L;
         return ResponseEntity.ok(projectService.updateProject(id, projectRequestDTO, userId));
     }

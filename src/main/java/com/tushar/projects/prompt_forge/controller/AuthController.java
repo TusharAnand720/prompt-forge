@@ -6,6 +6,7 @@ import com.tushar.projects.prompt_forge.dto.auth.SignUpRequestDTO;
 import com.tushar.projects.prompt_forge.dto.auth.UserProfileResponseDTO;
 import com.tushar.projects.prompt_forge.service.AuthService;
 import com.tushar.projects.prompt_forge.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,12 +23,12 @@ public class AuthController {
     UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponseDTO> signUp(@RequestBody SignUpRequestDTO signUpRequestDTO) {
+    public ResponseEntity<AuthResponseDTO> signUp(@RequestBody @Valid SignUpRequestDTO signUpRequestDTO) {
         return ResponseEntity.ok(authService.signup(signUpRequestDTO));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
         return ResponseEntity.ok(authService.login(loginRequestDTO));
     }
 
