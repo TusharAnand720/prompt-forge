@@ -4,6 +4,5 @@ public record PlanLimitResponseDTO(
         String planName,
         Integer maxTokensPerDay,
         Integer maxProjects,
-        Boolean unlimitedAi
-) {
+        Boolean unlimitedAi) {
 }

@@ -6,6 +6,5 @@ public record FileNodeDTO(
         String path,
         Instant modifiedAt,
         Long size,
-        String type
-) {
+        String type) {
 }
