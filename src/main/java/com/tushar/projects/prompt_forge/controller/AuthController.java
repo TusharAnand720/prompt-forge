@@ -1,9 +1,9 @@
 package com.tushar.projects.prompt_forge.controller;
 
-import com.tushar.projects.prompt_forge.dto.auth.AuthResponseDTO;
-import com.tushar.projects.prompt_forge.dto.auth.LoginRequestDTO;
-import com.tushar.projects.prompt_forge.dto.auth.SignUpRequestDTO;
-import com.tushar.projects.prompt_forge.dto.auth.UserProfileResponseDTO;
+import com.tushar.projects.prompt_forge.dto.auth.AuthResponse;
+import com.tushar.projects.prompt_forge.dto.auth.LoginRequest;
+import com.tushar.projects.prompt_forge.dto.auth.SignUpRequest;
+import com.tushar.projects.prompt_forge.dto.auth.UserProfileResponse;
 import com.tushar.projects.prompt_forge.service.AuthService;
 import com.tushar.projects.prompt_forge.service.UserService;
 import jakarta.validation.Valid;
@@ -23,17 +23,17 @@ public class AuthController {
     UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponseDTO> signUp(@RequestBody @Valid SignUpRequestDTO signUpRequestDTO) {
-        return ResponseEntity.ok(authService.signup(signUpRequestDTO));
+    public ResponseEntity<AuthResponse> signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+        return ResponseEntity.ok(authService.signup(signUpRequest));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody @Valid LoginRequestDTO loginRequestDTO) {
-        return ResponseEntity.ok(authService.login(loginRequestDTO));
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserProfileResponseDTO> getProfile() {
+    public ResponseEntity<UserProfileResponse> getProfile() {
         long userId = 0L;
         return ResponseEntity.ok(userService.getProfile(userId));
     }

@@ -1,8 +1,8 @@
 package com.tushar.projects.prompt_forge.service.impl;
 
-import com.tushar.projects.prompt_forge.dto.auth.AuthResponseDTO;
-import com.tushar.projects.prompt_forge.dto.auth.LoginRequestDTO;
-import com.tushar.projects.prompt_forge.dto.auth.SignUpRequestDTO;
+import com.tushar.projects.prompt_forge.dto.auth.AuthResponse;
+import com.tushar.projects.prompt_forge.dto.auth.LoginRequest;
+import com.tushar.projects.prompt_forge.dto.auth.SignUpRequest;
 import com.tushar.projects.prompt_forge.entity.User;
 import com.tushar.projects.prompt_forge.error.BadRequestException;
 import com.tushar.projects.prompt_forge.mapper.UserMapper;
@@ -28,20 +28,20 @@ public class AuthServiceImpl implements AuthService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public AuthResponseDTO signup(SignUpRequestDTO signUpRequestDTO) {
-        userRepository.findByUsername(signUpRequestDTO.username()).ifPresent(user -> {
-            throw new BadRequestException("User already exits with username: " + signUpRequestDTO.username());
+    public AuthResponse signup(SignUpRequest signUpRequest) {
+        userRepository.findByUsername(signUpRequest.username()).ifPresent(user -> {
+            throw new BadRequestException("User already exits with username: " + signUpRequest.username());
         });
 
-        User user = userMapper.toEntityFromSignUpRequest(signUpRequestDTO);
-        user.setPassword(passwordEncoder.encode(signUpRequestDTO.password()));
+        User user = userMapper.toEntityFromSignUpRequest(signUpRequest);
+        user.setPassword(passwordEncoder.encode(signUpRequest.password()));
         user = userRepository.save(user);
-        
-        return new AuthResponseDTO("dummy", userMapper.toUserProfileResponse(user));
+
+        return new AuthResponse("dummy", userMapper.toUserProfileResponse(user));
     }
 
     @Override
-    public AuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
+    public AuthResponse login(LoginRequest loginRequest) {
         return null;
     }
 }

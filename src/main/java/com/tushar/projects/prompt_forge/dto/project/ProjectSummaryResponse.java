@@ -2,7 +2,7 @@ package com.tushar.projects.prompt_forge.dto.project;
 
 import java.time.Instant;
 
-public record ProjectSummaryResponseDTO(
+public record ProjectSummaryResponse(
         Long id,
         String name,
         Instant createdAt,

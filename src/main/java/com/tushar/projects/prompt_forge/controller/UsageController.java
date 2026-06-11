@@ -1,7 +1,7 @@
 package com.tushar.projects.prompt_forge.controller;
 
-import com.tushar.projects.prompt_forge.dto.subscription.PlanLimitResponseDTO;
-import com.tushar.projects.prompt_forge.dto.subscription.UsageTodayResponseDTO;
+import com.tushar.projects.prompt_forge.dto.subscription.PlanLimitResponse;
+import com.tushar.projects.prompt_forge.dto.subscription.UsageTodayResponse;
 import com.tushar.projects.prompt_forge.service.UsageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ public class UsageController {
     UsageService usageService;
 
     @GetMapping("/today")
-    public ResponseEntity<UsageTodayResponseDTO> getTodayUsage() {
+    public ResponseEntity<UsageTodayResponse> getTodayUsage() {
         Long userId = 0L;
         return ResponseEntity.ok(usageService.getTodayUsage(userId));
     }
 
     @GetMapping("/limits")
-    public ResponseEntity<PlanLimitResponseDTO> getPlanLimits() {
+    public ResponseEntity<PlanLimitResponse> getPlanLimits() {
         Long userId = 0L;
         return ResponseEntity.ok(usageService.getCurrentSubscriptionLimitsOfUser(userId));
     }

@@ -1,7 +1,7 @@
 package com.tushar.projects.prompt_forge.controller;
 
-import com.tushar.projects.prompt_forge.dto.project.FileContentResponseDTO;
-import com.tushar.projects.prompt_forge.dto.project.FileNodeDTO;
+import com.tushar.projects.prompt_forge.dto.project.FileContentResponse;
+import com.tushar.projects.prompt_forge.dto.project.FileNode;
 import com.tushar.projects.prompt_forge.service.FileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +23,13 @@ public class FileController {
     FileService fileService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<FileNodeDTO>> getFileTree(@PathVariable Long projectId) {
+    public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {
         Long userId = 0L;
         return ResponseEntity.ok(fileService.getFileTree(projectId, userId));
     }
 
     @GetMapping("{*path}")
-    public ResponseEntity<FileContentResponseDTO> getFile(@PathVariable Long projectId, @PathVariable String path) {
+    public ResponseEntity<FileContentResponse> getFile(@PathVariable Long projectId, @PathVariable String path) {
         Long userId = 0L;
         return ResponseEntity.ok(fileService.getFileContent(projectId, path, userId));
     }

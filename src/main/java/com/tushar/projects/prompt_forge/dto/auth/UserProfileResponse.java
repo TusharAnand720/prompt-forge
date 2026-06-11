@@ -1,6 +1,6 @@
 package com.tushar.projects.prompt_forge.dto.auth;
 
-public record UserProfileResponseDTO(
+public record UserProfileResponse(
         Long id,
         String username,
         String name) {

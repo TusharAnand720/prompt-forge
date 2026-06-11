@@ -1,8 +1,8 @@
 package com.tushar.projects.prompt_forge.controller;
 
-import com.tushar.projects.prompt_forge.dto.project.ProjectRequestDTO;
-import com.tushar.projects.prompt_forge.dto.project.ProjectResponseDTO;
-import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponseDTO;
+import com.tushar.projects.prompt_forge.dto.project.ProjectRequest;
+import com.tushar.projects.prompt_forge.dto.project.ProjectResponse;
+import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponse;
 import com.tushar.projects.prompt_forge.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -23,29 +23,29 @@ public class ProjectController {
     ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectSummaryResponseDTO>> getMyProject() {
+    public ResponseEntity<List<ProjectSummaryResponse>> getMyProject() {
         Long userId = 1L;
         return ResponseEntity.ok(projectService.getUserProjects(userId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> getProjectById(@PathVariable Long id) {
+    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Long id) {
         Long userId = 1L;
         return ResponseEntity.ok(projectService.getUserProjectById(id, userId));
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody @Valid ProjectRequestDTO projectRequest) {
+    public ResponseEntity<ProjectResponse> createProject(@RequestBody @Valid ProjectRequest projectRequest) {
         Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectService.createProject(projectRequest, userId));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id,
-                                                            @RequestBody @Valid ProjectRequestDTO projectRequestDTO) {
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long id,
+                                                         @RequestBody @Valid ProjectRequest projectRequest) {
         Long userId = 1L;
-        return ResponseEntity.ok(projectService.updateProject(id, projectRequestDTO, userId));
+        return ResponseEntity.ok(projectService.updateProject(id, projectRequest, userId));
     }
 
     @DeleteMapping("/{id}")

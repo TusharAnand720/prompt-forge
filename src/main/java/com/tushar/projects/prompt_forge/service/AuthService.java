@@ -1,12 +1,12 @@
 package com.tushar.projects.prompt_forge.service;
 
-import com.tushar.projects.prompt_forge.dto.auth.AuthResponseDTO;
-import com.tushar.projects.prompt_forge.dto.auth.LoginRequestDTO;
-import com.tushar.projects.prompt_forge.dto.auth.SignUpRequestDTO;
+import com.tushar.projects.prompt_forge.dto.auth.AuthResponse;
+import com.tushar.projects.prompt_forge.dto.auth.LoginRequest;
+import com.tushar.projects.prompt_forge.dto.auth.SignUpRequest;
 
 public interface AuthService {
 
-    AuthResponseDTO signup(SignUpRequestDTO signUpRequestDTO);
+    AuthResponse signup(SignUpRequest signUpRequest);
 
-    AuthResponseDTO login(LoginRequestDTO loginRequestDTO);
+    AuthResponse login(LoginRequest loginRequest);
 }

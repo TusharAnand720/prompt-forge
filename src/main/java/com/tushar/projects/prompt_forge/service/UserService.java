@@ -1,7 +1,7 @@
 package com.tushar.projects.prompt_forge.service;
 
-import com.tushar.projects.prompt_forge.dto.auth.UserProfileResponseDTO;
+import com.tushar.projects.prompt_forge.dto.auth.UserProfileResponse;
 
 public interface UserService {
-    UserProfileResponseDTO getProfile(Long userId);
+    UserProfileResponse getProfile(Long userId);
 }

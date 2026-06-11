@@ -1,8 +1,8 @@
 package com.tushar.projects.prompt_forge.controller;
 
-import com.tushar.projects.prompt_forge.dto.member.InviteMemberRequestDTO;
-import com.tushar.projects.prompt_forge.dto.member.MemberResponseDTO;
-import com.tushar.projects.prompt_forge.dto.member.UpdateMemberRoleRequestDTO;
+import com.tushar.projects.prompt_forge.dto.member.InviteMemberRequest;
+import com.tushar.projects.prompt_forge.dto.member.MemberResponse;
+import com.tushar.projects.prompt_forge.dto.member.UpdateMemberRoleRequest;
 import com.tushar.projects.prompt_forge.service.ProjectMemberService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -23,21 +23,21 @@ public class ProjectMemberController {
     ProjectMemberService projectMemberService;
 
     @GetMapping
-    public ResponseEntity<List<MemberResponseDTO>> getProjectMember(@PathVariable Long projectId) {
+    public ResponseEntity<List<MemberResponse>> getProjectMember(@PathVariable Long projectId) {
         Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.getMembers(projectId, userId));
     }
 
     @PostMapping
-    public ResponseEntity<MemberResponseDTO> inviteMember(@PathVariable Long projectId,
-                                                          @RequestBody @Valid InviteMemberRequestDTO request) {
+    public ResponseEntity<MemberResponse> inviteMember(@PathVariable Long projectId,
+                                                       @RequestBody @Valid InviteMemberRequest request) {
         Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED).body(projectMemberService.inviteMember(projectId, request, userId));
     }
 
     @PatchMapping("/{memberId}")
-    public ResponseEntity<MemberResponseDTO> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId,
-                                                              @RequestBody @Valid UpdateMemberRoleRequestDTO request) {
+    public ResponseEntity<MemberResponse> updateMemberRole(@PathVariable Long projectId, @PathVariable Long memberId,
+                                                           @RequestBody @Valid UpdateMemberRoleRequest request) {
         Long userId = 1L;
         return ResponseEntity.ok(projectMemberService.updateMemberRole(projectId, memberId, request, userId));
     }

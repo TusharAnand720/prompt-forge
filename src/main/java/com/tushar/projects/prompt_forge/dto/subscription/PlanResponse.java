@@ -1,6 +1,6 @@
 package com.tushar.projects.prompt_forge.dto.subscription;
 
-public record PlanResponseDTO(
+public record PlanResponse(
         Long id,
         String name,
         Integer maxProjects,

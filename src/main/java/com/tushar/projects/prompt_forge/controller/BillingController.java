@@ -23,24 +23,24 @@ public class BillingController {
     SubscriptionService subscriptionService;
 
     @GetMapping("/api/plans")
-    public ResponseEntity<List<PlanResponseDTO>> getAllPlans() {
+    public ResponseEntity<List<PlanResponse>> getAllPlans() {
         return ResponseEntity.ok(planService.getAllActivePlans());
     }
 
     @GetMapping("api/me/subscription")
-    public ResponseEntity<SubscriptionResponseDTO> getMySubscription() {
+    public ResponseEntity<SubscriptionResponse> getMySubscription() {
         Long userID = 0L;
         return ResponseEntity.ok(subscriptionService.getCurrentSubscription(userID));
     }
 
     @PostMapping("/api/stripe/checkout")
-    public ResponseEntity<CheckoutResponseDTO> createCheckoutResponse(@RequestBody CheckoutRequestDTO request) {
+    public ResponseEntity<CheckoutResponse> createCheckoutResponse(@RequestBody CheckoutRequest request) {
         Long userId = 0L;
         return ResponseEntity.ok(subscriptionService.createCheckoutSessionUrl(request, userId));
     }
 
     @PostMapping("/api/stripe/portal")
-    public ResponseEntity<PortalResponseDTO> openCustomerPortal() {
+    public ResponseEntity<PortalResponse> openCustomerPortal() {
         Long userId = 0L;
         return ResponseEntity.ok(subscriptionService.openCustomerPortal(userId));
     }

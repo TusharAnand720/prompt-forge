@@ -1,6 +1,6 @@
 package com.tushar.projects.prompt_forge.dto.project;
 
-public record FileContentResponseDTO(
+public record FileContentResponse(
         String path,
         String content) {
 }

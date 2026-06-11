@@ -1,13 +1,13 @@
 package com.tushar.projects.prompt_forge.service;
 
-import com.tushar.projects.prompt_forge.dto.project.FileContentResponseDTO;
-import com.tushar.projects.prompt_forge.dto.project.FileNodeDTO;
+import com.tushar.projects.prompt_forge.dto.project.FileContentResponse;
+import com.tushar.projects.prompt_forge.dto.project.FileNode;
 
 import java.util.List;
 
 public interface FileService {
 
-    List<FileNodeDTO> getFileTree(Long projectId, Long userId);
+    List<FileNode> getFileTree(Long projectId, Long userId);
 
-    FileContentResponseDTO getFileContent(Long projectId, String path, Long userId);
+    FileContentResponse getFileContent(Long projectId, String path, Long userId);
 }

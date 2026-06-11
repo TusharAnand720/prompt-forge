@@ -1,8 +1,8 @@
 package com.tushar.projects.prompt_forge.service.impl;
 
-import com.tushar.projects.prompt_forge.dto.project.ProjectRequestDTO;
-import com.tushar.projects.prompt_forge.dto.project.ProjectResponseDTO;
-import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponseDTO;
+import com.tushar.projects.prompt_forge.dto.project.ProjectRequest;
+import com.tushar.projects.prompt_forge.dto.project.ProjectResponse;
+import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponse;
 import com.tushar.projects.prompt_forge.entity.Project;
 import com.tushar.projects.prompt_forge.entity.ProjectMember;
 import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
@@ -36,20 +36,20 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMapper projectMapper;
 
     @Override
-    public List<ProjectSummaryResponseDTO> getUserProjects(Long userId) {
+    public List<ProjectSummaryResponse> getUserProjects(Long userId) {
         return projectRepository.findAllAccessibleByUser(userId).stream()
-                .map(projectMapper::toProjectSummaryResponseDTO)
+                .map(projectMapper::toProjectSummaryResponse)
                 .toList();
     }
 
     @Override
-    public ProjectResponseDTO getUserProjectById(Long id, Long userId) {
+    public ProjectResponse getUserProjectById(Long id, Long userId) {
         Project project = getAccessibleProjectById(id, userId);
-        return projectMapper.toProjectResponseDTO(project);
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
-    public ProjectResponseDTO createProject(ProjectRequestDTO projectRequest, Long userId) {
+    public ProjectResponse createProject(ProjectRequest projectRequest, Long userId) {
 
         User owner = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("userId", userId.toString()));
@@ -71,15 +71,15 @@ public class ProjectServiceImpl implements ProjectService {
         projectMemberRepository.save(projectMember);
 
 
-        return projectMapper.toProjectResponseDTO(project);
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override
-    public ProjectResponseDTO updateProject(Long id, ProjectRequestDTO projectRequestDTO, Long userId) {
+    public ProjectResponse updateProject(Long id, ProjectRequest projectRequest, Long userId) {
         Project project = getAccessibleProjectById(id, userId);
-        project.setName(projectRequestDTO.name());
+        project.setName(projectRequest.name());
         project = projectRepository.save(project);
-        return projectMapper.toProjectResponseDTO(project);
+        return projectMapper.toProjectResponse(project);
     }
 
     @Override

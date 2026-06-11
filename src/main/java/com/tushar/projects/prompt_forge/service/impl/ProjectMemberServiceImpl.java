@@ -1,8 +1,8 @@
 package com.tushar.projects.prompt_forge.service.impl;
 
-import com.tushar.projects.prompt_forge.dto.member.InviteMemberRequestDTO;
-import com.tushar.projects.prompt_forge.dto.member.MemberResponseDTO;
-import com.tushar.projects.prompt_forge.dto.member.UpdateMemberRoleRequestDTO;
+import com.tushar.projects.prompt_forge.dto.member.InviteMemberRequest;
+import com.tushar.projects.prompt_forge.dto.member.MemberResponse;
+import com.tushar.projects.prompt_forge.dto.member.UpdateMemberRoleRequest;
 import com.tushar.projects.prompt_forge.entity.Project;
 import com.tushar.projects.prompt_forge.entity.ProjectMember;
 import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
@@ -35,7 +35,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     ProjectMemberMapper projectMemberMapper;
 
     @Override
-    public List<MemberResponseDTO> getMembers(Long projectId, Long userId) {
+    public List<MemberResponse> getMembers(Long projectId, Long userId) {
 
         return projectMemberRepository.findByProjectId(projectId).stream()
                 .map(projectMemberMapper::toProjectMemberResponseFromMember)
@@ -44,7 +44,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
 
     @Override
-    public MemberResponseDTO inviteMember(Long projectId, InviteMemberRequestDTO request, Long userId) {
+    public MemberResponse inviteMember(Long projectId, InviteMemberRequest request, Long userId) {
 
         Project project = getAccessibleProjectById(projectId, userId);
 
@@ -71,7 +71,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public MemberResponseDTO updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequestDTO request, Long userId) {
+    public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request, Long userId) {
 
         ProjectMemberId projectMemberId = new ProjectMemberId(projectId, memberId);
         ProjectMember projectMember = projectMemberRepository.findById(projectMemberId).orElseThrow();

@@ -1,14 +1,14 @@
 package com.tushar.projects.prompt_forge.service;
 
-import com.tushar.projects.prompt_forge.dto.subscription.CheckoutRequestDTO;
-import com.tushar.projects.prompt_forge.dto.subscription.CheckoutResponseDTO;
-import com.tushar.projects.prompt_forge.dto.subscription.PortalResponseDTO;
-import com.tushar.projects.prompt_forge.dto.subscription.SubscriptionResponseDTO;
+import com.tushar.projects.prompt_forge.dto.subscription.CheckoutRequest;
+import com.tushar.projects.prompt_forge.dto.subscription.CheckoutResponse;
+import com.tushar.projects.prompt_forge.dto.subscription.PortalResponse;
+import com.tushar.projects.prompt_forge.dto.subscription.SubscriptionResponse;
 
 public interface SubscriptionService {
-    SubscriptionResponseDTO getCurrentSubscription(Long userID);
+    SubscriptionResponse getCurrentSubscription(Long userID);
 
-    CheckoutResponseDTO createCheckoutSessionUrl(CheckoutRequestDTO request, Long userId);
+    CheckoutResponse createCheckoutSessionUrl(CheckoutRequest request, Long userId);
 
-    PortalResponseDTO openCustomerPortal(Long userId);
+    PortalResponse openCustomerPortal(Long userId);
 }

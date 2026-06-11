@@ -2,7 +2,7 @@ package com.tushar.projects.prompt_forge.dto.project;
 
 import java.time.Instant;
 
-public record FileNodeDTO(
+public record FileNode(
         String path,
         Instant modifiedAt,
         Long size,
