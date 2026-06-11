@@ -1,7 +1,6 @@
 package com.tushar.projects.prompt_forge.error;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,16 +35,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleInputValidationError(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult()
-                .getAllErrors()
+        List<ApiFieldError> errors = ex.getBindingResult()
+                .getFieldErrors()
                 .stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .map(error -> ApiFieldError.builder()
+                        .fieldName(error.getField())
+                        .message(error.getDefaultMessage())
+                        .build())
                 .toList();
 
         ApiError apiError = ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .message("Input Validation Failed")
-                .subErrors(errors)
+                .errors(errors)
                 .build();
 
         log.error(apiError.toString(), ex);

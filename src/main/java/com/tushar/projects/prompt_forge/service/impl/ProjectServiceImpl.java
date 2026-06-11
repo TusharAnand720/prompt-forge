@@ -4,9 +4,13 @@ import com.tushar.projects.prompt_forge.dto.project.ProjectRequestDTO;
 import com.tushar.projects.prompt_forge.dto.project.ProjectResponseDTO;
 import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponseDTO;
 import com.tushar.projects.prompt_forge.entity.Project;
+import com.tushar.projects.prompt_forge.entity.ProjectMember;
+import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
 import com.tushar.projects.prompt_forge.entity.User;
+import com.tushar.projects.prompt_forge.enums.ProjectRole;
 import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.mapper.ProjectMapper;
+import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
 import com.tushar.projects.prompt_forge.reposityory.ProjectRepository;
 import com.tushar.projects.prompt_forge.reposityory.UserRepository;
 import com.tushar.projects.prompt_forge.service.ProjectService;
@@ -27,6 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     ProjectRepository projectRepository;
     UserRepository userRepository;
+    ProjectMemberRepository projectMemberRepository;
 
     ProjectMapper projectMapper;
 
@@ -46,14 +51,25 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponseDTO createProject(ProjectRequestDTO projectRequest, Long userId) {
 
-        User owner = userRepository.findById(userId).orElseThrow();
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("userId", userId.toString()));
 
         Project project = Project.builder()
                 .name(projectRequest.name())
-                .owner(owner)
                 .build();
-
         projectRepository.save(project);
+
+        ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
+        ProjectMember projectMember = ProjectMember.builder()
+                .id(projectMemberId)
+                .projectRole(ProjectRole.OWNER)
+                .user(owner)
+                .project(project)
+                .acceptedAt(Instant.now())
+                .invitedAt(Instant.now())
+                .build();
+        projectMemberRepository.save(projectMember);
+
 
         return projectMapper.toProjectResponseDTO(project);
     }

@@ -6,7 +6,7 @@ import java.time.Instant;
 
 public record MemberResponseDTO(
         Long userId,
-        String email,
+        String username,
         String name,
         String avatarUrl,
         ProjectRole projectRole,

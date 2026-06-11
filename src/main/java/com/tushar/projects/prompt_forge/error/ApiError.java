@@ -1,5 +1,6 @@
 package com.tushar.projects.prompt_forge.error;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import org.springframework.http.HttpStatus;
 
@@ -10,14 +11,26 @@ import java.util.List;
 public record ApiError(
         HttpStatus status,
         String message,
-        List<String> subErrors,
+        @JsonInclude(JsonInclude.Include.NON_NULL) List<ApiFieldError> errors,
         Instant timestamp) {
+
+    public ApiError {
+        if (timestamp == null) {
+            timestamp = Instant.now();
+        }
+    }
 
     public ApiError(HttpStatus status, String message) {
         this(status, message, null, Instant.now());
     }
 
-    public ApiError(HttpStatus status, List<String> subErrors, String message) {
-        this(status, message, subErrors, Instant.now());
+    public ApiError(HttpStatus status, List<ApiFieldError> errors, String message) {
+        this(status, message, errors, Instant.now());
     }
+}
+
+@Builder
+record ApiFieldError(
+        String fieldName,
+        String message) {
 }
