@@ -7,11 +7,15 @@ import com.tushar.projects.prompt_forge.entity.User;
 import com.tushar.projects.prompt_forge.error.BadRequestException;
 import com.tushar.projects.prompt_forge.mapper.UserMapper;
 import com.tushar.projects.prompt_forge.reposityory.UserRepository;
+import com.tushar.projects.prompt_forge.security.AuthUtil;
 import com.tushar.projects.prompt_forge.service.AuthService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,9 @@ public class AuthServiceImpl implements AuthService {
     UserMapper userMapper;
 
     PasswordEncoder passwordEncoder;
+    AuthUtil authUtil;
+    AuthenticationManager authenticationManager;
+
 
     @Override
     public AuthResponse signup(SignUpRequest signUpRequest) {
@@ -37,11 +44,18 @@ public class AuthServiceImpl implements AuthService {
         user.setPassword(passwordEncoder.encode(signUpRequest.password()));
         user = userRepository.save(user);
 
-        return new AuthResponse("dummy", userMapper.toUserProfileResponse(user));
+        return new AuthResponse(authUtil.generateAccessToken(user), userMapper.toUserProfileResponse(user));
     }
 
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
-        return null;
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
+        );
+        User user = (User) authentication.getPrincipal();
+
+        return new AuthResponse(authUtil.generateAccessToken(user),
+                userMapper.toUserProfileResponse(user));
+
     }
 }

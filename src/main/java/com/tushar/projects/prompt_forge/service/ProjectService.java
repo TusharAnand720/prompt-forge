@@ -7,13 +7,13 @@ import com.tushar.projects.prompt_forge.dto.project.ProjectSummaryResponse;
 import java.util.List;
 
 public interface ProjectService {
-    List<ProjectSummaryResponse> getUserProjects(Long userId);
+    List<ProjectSummaryResponse> getUserProjects();
 
-    ProjectResponse getUserProjectById(Long id, Long userId);
+    ProjectResponse getUserProjectById(Long id);
 
-    ProjectResponse createProject(ProjectRequest projectRequest, Long userId);
+    ProjectResponse createProject(ProjectRequest projectRequest);
 
-    ProjectResponse updateProject(Long id, ProjectRequest projectRequest, Long userId);
+    ProjectResponse updateProject(Long id, ProjectRequest projectRequest);
 
-    void deleteProject(Long id, Long userId);
+    void deleteProject(Long id);
 }
