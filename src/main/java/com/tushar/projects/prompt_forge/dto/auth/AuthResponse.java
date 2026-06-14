@@ -1,7 +1,7 @@
 package com.tushar.projects.prompt_forge.dto.auth;
 
 public record AuthResponse(
-        String toke,
+        String token,
         UserProfileResponse userProfileResponseDTO) {
 
 }
