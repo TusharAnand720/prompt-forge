@@ -1,6 +1,6 @@
 package com.tushar.projects.prompt_forge.entity;
 
-import com.tushar.projects.prompt_forge.enums.ProjectRole;
+import com.tushar.projects.prompt_forge.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +30,7 @@ public class ProjectMember {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    ProjectRole projectRole;
+    Role projectRole;
 
     Instant invitedAt;
     Instant acceptedAt;

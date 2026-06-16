@@ -1,6 +1,6 @@
 package com.tushar.projects.prompt_forge.security;
 
-import com.tushar.projects.prompt_forge.enums.ProjectRole;
+import com.tushar.projects.prompt_forge.enums.Permission;
 import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,17 +12,33 @@ public class SecurityExpression {
     private final ProjectMemberRepository projectMemberRepository;
     private final AuthUtil authUtil;
 
-    public boolean canViewProject(Long projectId) {
+    private boolean hasPermission(Long projectId, Permission projectPermission) {
         Long userId = authUtil.getCurrentUserId();
         return projectMemberRepository.findRoleByProjectIdAndUserId(projectId, userId)
-                .map(role -> role.equals(ProjectRole.VIEWER) || role.equals(ProjectRole.EDITOR) || role.equals(ProjectRole.OWNER))
+                .map(role -> role.getPermissions().contains(projectPermission))
                 .orElse(false);
+
+    }
+
+    public boolean canViewProject(Long projectId) {
+        return hasPermission(projectId, Permission.VIEW);
     }
 
     public boolean canEditProject(Long projectId) {
-        Long userId = authUtil.getCurrentUserId();
-        return projectMemberRepository.findRoleByProjectIdAndUserId(projectId, userId)
-                .map(role -> role.equals(ProjectRole.EDITOR) || role.equals(ProjectRole.OWNER))
-                .orElse(false);
+        return hasPermission(projectId, Permission.EDIT);
     }
+
+    public boolean canDeleteProject(Long projectId) {
+        return hasPermission(projectId, Permission.DELETE);
+    }
+
+    public boolean canViewMembers(Long projectId) {
+        return hasPermission(projectId, Permission.VIEW_MEMBERS);
+
+    }
+
+    public boolean canManageMembers(Long projectId) {
+        return hasPermission(projectId, Permission.MANAGE_MEMBERS);
+    }
+
 }

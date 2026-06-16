@@ -1,6 +1,6 @@
 package com.tushar.projects.prompt_forge.dto.member;
 
-import com.tushar.projects.prompt_forge.enums.ProjectRole;
+import com.tushar.projects.prompt_forge.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,5 +11,5 @@ public record InviteMemberRequest(
         String username,
 
         @NotNull
-        ProjectRole role) {
+        Role role) {
 }

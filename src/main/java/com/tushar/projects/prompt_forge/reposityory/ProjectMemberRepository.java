@@ -2,7 +2,7 @@ package com.tushar.projects.prompt_forge.reposityory;
 
 import com.tushar.projects.prompt_forge.entity.ProjectMember;
 import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
-import com.tushar.projects.prompt_forge.enums.ProjectRole;
+import com.tushar.projects.prompt_forge.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +21,6 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Pr
             WHERE pm.id.projectId = :projectId
             AND pm.id.userId = :userId
             """)
-    Optional<ProjectRole> findRoleByProjectIdAndUserId(@Param("projectId") Long projectId,
-                                                       @Param("userId") Long userId);
+    Optional<Role> findRoleByProjectIdAndUserId(@Param("projectId") Long projectId,
+                                                @Param("userId") Long userId);
 }

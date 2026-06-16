@@ -7,7 +7,7 @@ import com.tushar.projects.prompt_forge.entity.Project;
 import com.tushar.projects.prompt_forge.entity.ProjectMember;
 import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
 import com.tushar.projects.prompt_forge.entity.User;
-import com.tushar.projects.prompt_forge.enums.ProjectRole;
+import com.tushar.projects.prompt_forge.enums.Role;
 import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.mapper.ProjectMapper;
 import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
@@ -48,10 +48,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @PreAuthorize("@spring.canViewProject(#id)")
-    public ProjectResponse getUserProjectById(Long id) {
+    @PreAuthorize("@security.canViewProject(#projectId)")
+    public ProjectResponse getUserProjectById(Long projectId) {
         Long userId = authUtil.getCurrentUserId();
-        Project project = getAccessibleProjectById(id, userId);
+        Project project = getAccessibleProjectById(projectId, userId);
         return projectMapper.toProjectResponse(project);
     }
 
@@ -70,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectMemberId projectMemberId = new ProjectMemberId(project.getId(), owner.getId());
         ProjectMember projectMember = ProjectMember.builder()
                 .id(projectMemberId)
-                .projectRole(ProjectRole.OWNER)
+                .projectRole(Role.OWNER)
                 .user(owner)
                 .project(project)
                 .acceptedAt(Instant.now())
@@ -83,18 +83,20 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse updateProject(Long id, ProjectRequest projectRequest) {
+    @PreAuthorize("@security.canEditProject(#projectId)")
+    public ProjectResponse updateProject(Long projectId, ProjectRequest projectRequest) {
         Long userId = authUtil.getCurrentUserId();
-        Project project = getAccessibleProjectById(id, userId);
+        Project project = getAccessibleProjectById(projectId, userId);
         project.setName(projectRequest.name());
         project = projectRepository.save(project);
         return projectMapper.toProjectResponse(project);
     }
 
     @Override
-    public void deleteProject(Long id) {
+    @PreAuthorize("@security.canDeleteProject(#projectId)")
+    public void deleteProject(Long projectId) {
         Long userId = authUtil.getCurrentUserId();
-        Project project = getAccessibleProjectById(id, userId);
+        Project project = getAccessibleProjectById(projectId, userId);
         project.setDeletedAt(Instant.now());
         projectRepository.save(project);
     }
