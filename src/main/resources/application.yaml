@@ -19,3 +19,12 @@ spring:
 
 jwt:
   secret-key: sdkjnbhfjsdahlfuiashdilufjhadliufhhnfjdhai
+
+stripe:
+  api:
+    secret: sk_test_51TiyS0RiW6TgZoohoSoOB8ChaOPYsRLGltDJYiIuNE6vV9F1lGxNEEHNr8tiC99P0fh6fTmvPwqgQHYG7Lx6bGIa00ifxqwxds
+  webhook:
+    secret: whsec_b0d52f7483eea1aa6632df741fa63f6fe24605f34a4f71784c0aadc732641ffd
+
+client:
+  url: http://localhost:8080

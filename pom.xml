@@ -92,6 +92,13 @@
             <version>0.12.6</version>
         </dependency>
 
+        <!-- Stripe -->
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>31.1.0</version>
+        </dependency>
+
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
