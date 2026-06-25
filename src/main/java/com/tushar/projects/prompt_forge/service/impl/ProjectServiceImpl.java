@@ -8,6 +8,7 @@ import com.tushar.projects.prompt_forge.entity.ProjectMember;
 import com.tushar.projects.prompt_forge.entity.ProjectMemberId;
 import com.tushar.projects.prompt_forge.entity.User;
 import com.tushar.projects.prompt_forge.enums.Role;
+import com.tushar.projects.prompt_forge.error.BadRequestException;
 import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.mapper.ProjectMapper;
 import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
@@ -15,6 +16,7 @@ import com.tushar.projects.prompt_forge.reposityory.ProjectRepository;
 import com.tushar.projects.prompt_forge.reposityory.UserRepository;
 import com.tushar.projects.prompt_forge.security.AuthUtil;
 import com.tushar.projects.prompt_forge.service.ProjectService;
+import com.tushar.projects.prompt_forge.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     AuthUtil authUtil;
 
+    SubscriptionService subscriptionService;
+
     @Override
     public List<ProjectSummaryResponse> getUserProjects() {
         Long userId = authUtil.getCurrentUserId();
@@ -57,6 +61,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponse createProject(ProjectRequest projectRequest) {
+
+        if (!subscriptionService.canCreateProject()) {
+            throw new BadRequestException("User has reached the maximum number of projects allowed by their subscription plan.");
+        }
 
         Long userId = authUtil.getCurrentUserId();
 

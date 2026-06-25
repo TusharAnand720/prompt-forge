@@ -56,7 +56,6 @@ public class BillingController {
 
     @PostMapping("/api/stripe/portal")
     public ResponseEntity<PortalResponse> openCustomerPortal() {
-        Long userId = 0L;
         return ResponseEntity.ok(paymentProcessor.openCustomerPortal());
     }
 

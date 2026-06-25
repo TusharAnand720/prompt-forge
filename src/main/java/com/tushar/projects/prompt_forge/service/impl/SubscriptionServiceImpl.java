@@ -8,6 +8,7 @@ import com.tushar.projects.prompt_forge.enums.SubscriptionStatus;
 import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.mapper.SubscriptionMapper;
 import com.tushar.projects.prompt_forge.reposityory.PlanRepository;
+import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
 import com.tushar.projects.prompt_forge.reposityory.SubscriptionRepository;
 import com.tushar.projects.prompt_forge.reposityory.UserRepository;
 import com.tushar.projects.prompt_forge.security.AuthUtil;
@@ -32,6 +33,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     SubscriptionRepository subscriptionRepository;
     UserRepository userRepository;
     PlanRepository planRepository;
+    ProjectMemberRepository projectMemberRepository;
 
     SubscriptionMapper subscriptionMapper;
 
@@ -68,12 +70,42 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void updateSubscription(String subscriptionId, SubscriptionStatus status, Instant periodStart, Instant periodEnd, Boolean cancelAtPeriodEnd, Long planId) {
+        Subscription subscription = getSubscriptionByStripeSubscriptionId(subscriptionId);
 
+        boolean hasSubscriptionUpdated = false;
+
+        if (status != null && status != subscription.getStatus()) {
+            hasSubscriptionUpdated = true;
+            subscription.setStatus(status);
+        }
+        if (periodStart != null && periodStart.equals(subscription.getCurrentPeriodStart())) {
+            hasSubscriptionUpdated = true;
+            subscription.setCurrentPeriodStart(periodStart);
+        }
+        if (periodEnd != null && periodEnd.equals(subscription.getCurrentPeriodEnd())) {
+            hasSubscriptionUpdated = true;
+            subscription.setCurrentPeriodEnd(periodEnd);
+        }
+        if (cancelAtPeriodEnd != null && cancelAtPeriodEnd != subscription.getCancelAtPeriodEnd()) {
+            hasSubscriptionUpdated = true;
+            subscription.setCancelAtPeriodEnd(cancelAtPeriodEnd);
+        }
+        if (planId != null && planId.equals(subscription.getPlan().getId())) {
+            hasSubscriptionUpdated = true;
+            Plan newPLan = getPlan(planId);
+            subscription.setPlan(newPLan);
+        }
+
+        if (hasSubscriptionUpdated) {
+            subscriptionRepository.save(subscription);
+        }
     }
 
     @Override
     public void cancelSubscription(String subscriptionId) {
-
+        Subscription subscription = getSubscriptionByStripeSubscriptionId(subscriptionId);
+        subscription.setStatus(SubscriptionStatus.CANCELED);
+        subscriptionRepository.save(subscription);
     }
 
     @Override
@@ -93,7 +125,22 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void markSubscriptionPastDue(String subscriptionId) {
+        Subscription subscription = getSubscriptionByStripeSubscriptionId(subscriptionId);
+        if (subscription.getStatus() == SubscriptionStatus.PAST_DUE) {
+            return;
+        }
+        subscription.setStatus(SubscriptionStatus.PAST_DUE);
+        subscriptionRepository.save(subscription);
+    }
 
+    @Override
+    public boolean canCreateProject() {
+        SubscriptionResponse subscription = getCurrentSubscription();
+        int countOfOwnedProjects = projectMemberRepository.countProjectOwnedByUser(authUtil.getCurrentUserId());
+        if (subscription.plan() == null) {
+            return countOfOwnedProjects < 1;
+        }
+        return countOfOwnedProjects < subscription.plan().maxProjects();
     }
 
     private User getUser(Long userId) {

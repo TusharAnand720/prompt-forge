@@ -10,6 +10,7 @@ import com.tushar.projects.prompt_forge.dto.subscription.PortalResponse;
 import com.tushar.projects.prompt_forge.entity.Plan;
 import com.tushar.projects.prompt_forge.entity.User;
 import com.tushar.projects.prompt_forge.enums.SubscriptionStatus;
+import com.tushar.projects.prompt_forge.error.BadRequestException;
 import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.reposityory.PlanRepository;
 import com.tushar.projects.prompt_forge.reposityory.UserRepository;
@@ -87,7 +88,25 @@ public class StripePaymentProcessor implements PaymentProcessor {
 
     @Override
     public PortalResponse openCustomerPortal() {
-        return null;
+
+        Long userId = authUtil.getCurrentUserId();
+        User user = getUser(userId);
+        String stripeCustomerId = user.getStripeCustomerId();
+
+        if (stripeCustomerId == null || stripeCustomerId.isEmpty()) {
+            throw new BadRequestException("User does not have a Stripe customer ID. Cannot open customer portal.");
+        }
+        try {
+            var portalSession = com.stripe.model.billingportal.Session.create(
+                    com.stripe.param.billingportal.SessionCreateParams.builder()
+                            .setCustomer(stripeCustomerId)
+                            .setReturnUrl(frontEndUrl)
+                            .build());
+
+            return new PortalResponse(portalSession.getUrl());
+        } catch (StripeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
