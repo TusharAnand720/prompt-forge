@@ -2,7 +2,7 @@ package com.tushar.projects.prompt_forge.controller;
 
 import com.tushar.projects.prompt_forge.dto.project.FileContentResponse;
 import com.tushar.projects.prompt_forge.dto.project.FileNode;
-import com.tushar.projects.prompt_forge.service.FileService;
+import com.tushar.projects.prompt_forge.service.ProjectFileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +20,7 @@ import java.util.List;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class FileController {
 
-    FileService fileService;
+    ProjectFileService fileService;
 
     @GetMapping("/{id}")
     public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {

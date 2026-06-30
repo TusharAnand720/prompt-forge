@@ -3,10 +3,12 @@ package com.tushar.projects.prompt_forge.security;
 import com.tushar.projects.prompt_forge.enums.Permission;
 import com.tushar.projects.prompt_forge.reposityory.ProjectMemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component("security")
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityExpression {
 
     private final ProjectMemberRepository projectMemberRepository;

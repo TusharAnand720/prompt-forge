@@ -27,8 +27,9 @@ public class WebSecurityConfig {
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**", "/webhook/**").permitAll()
-                                .anyRequest().authenticated()
+                                auth.requestMatchers("/api/auth/**", "/webhook/**", "/api/chat/stream").permitAll()
+//                                .requestMatchers("/api/chat/stream").authenticated()
+                                        .anyRequest().authenticated()
                 ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();

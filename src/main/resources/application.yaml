@@ -3,7 +3,7 @@ spring:
     name: prompt-forge
 
   datasource:
-    url: jdbc:postgresql://localhost:9000/testDB
+    url: jdbc:postgresql://localhost:9010/testDB
     username: testUser
     password: password
     driver-class-name: org.postgresql.Driver
@@ -19,11 +19,13 @@ spring:
 
   ai:
     openai:
-      api-key:
-      base-url: https://openrouter.ai/api
+      api-key: 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
+      base-url: https://openrouter.ai/api/
       chat:
         options:
-          model:
+          model: openai/gpt-oss-120b:free
+          #          model: nvidia/nemotron-3-super-120b-a12b:free
+          #          model: google/gemma-4-26b-a4b-it:free
           temperature: 0.0
 
 jwt:
@@ -37,3 +39,14 @@ stripe:
 
 client:
   url: http://localhost:8080
+
+logging:
+  level:
+    org.springframework.ai:
+      chat.client: DEBUG
+
+minio:
+  url: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin123
+  project-bucket: projects
