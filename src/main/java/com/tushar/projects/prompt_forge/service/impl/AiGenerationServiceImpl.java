@@ -1,6 +1,7 @@
 package com.tushar.projects.prompt_forge.service.impl;
 
 import com.tushar.projects.prompt_forge.llm.PromptUtils;
+import com.tushar.projects.prompt_forge.llm.advisors.FileTreeContextAdvisor;
 import com.tushar.projects.prompt_forge.security.AuthUtil;
 import com.tushar.projects.prompt_forge.service.AiGenerationService;
 import com.tushar.projects.prompt_forge.service.ProjectFileService;
@@ -27,6 +28,8 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
     private final ProjectFileService projectFileService;
 
+    private final FileTreeContextAdvisor fileTreeContextAdvisor;
+
     @Override
 //    @PreAuthorize("@security.canEditProject(#projectId)")
     public Flux<String> streamResponse(String userMessage, Long projectId) {
@@ -45,7 +48,10 @@ public class AiGenerationServiceImpl implements AiGenerationService {
             return chatClient.prompt()
                     .system(PromptUtils.CODE_GENERATION_SYSTEM_PROMPT)
                     .user(userMessage)
-                    .advisors(advisorSpec -> advisorSpec.params(advisorParams))
+                    .advisors(advisorSpec -> {
+                        advisorSpec.params(advisorParams);
+                        advisorSpec.advisors(fileTreeContextAdvisor);
+                    })
                     .stream()
                     .chatResponse()
                     .doOnNext(response -> {
