@@ -10,7 +10,6 @@ public record MemberResponse(
         String name,
         String avatarUrl,
         Role projectRole,
-        Instant invitedAt
-) {
+        Instant invitedAt) {
 
 }

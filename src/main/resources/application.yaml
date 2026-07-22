@@ -19,13 +19,13 @@ spring:
 
   ai:
     openai:
-      api-key: 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
+      api-key: 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
       base-url: https://openrouter.ai/api/
       chat:
         options:
-          model: openai/gpt-oss-120b:free
+          #                    model: openai/gpt-oss-120b:free
           #          model: nvidia/nemotron-3-super-120b-a12b:free
-          #          model: google/gemma-4-26b-a4b-it:free
+          model: google/gemma-4-26b-a4b-it:free
           temperature: 0.0
 
 jwt:

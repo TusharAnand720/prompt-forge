@@ -45,7 +45,6 @@ public class BillingController {
 
     @GetMapping("api/me/subscription")
     public ResponseEntity<SubscriptionResponse> getMySubscription() {
-        Long userID = 0L;
         return ResponseEntity.ok(subscriptionService.getCurrentSubscription());
     }
 

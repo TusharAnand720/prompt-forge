@@ -2,6 +2,7 @@ package com.tushar.projects.prompt_forge.service.impl;
 
 import com.tushar.projects.prompt_forge.llm.PromptUtils;
 import com.tushar.projects.prompt_forge.llm.advisors.FileTreeContextAdvisor;
+import com.tushar.projects.prompt_forge.llm.tools.CodeGenerationTools;
 import com.tushar.projects.prompt_forge.security.AuthUtil;
 import com.tushar.projects.prompt_forge.service.AiGenerationService;
 import com.tushar.projects.prompt_forge.service.ProjectFileService;
@@ -45,9 +46,12 @@ public class AiGenerationServiceImpl implements AiGenerationService {
 
             StringBuilder fullResponseBuffer = new StringBuilder();
 
+            CodeGenerationTools codeGenerationTools = new CodeGenerationTools(projectFileService, projectId);
+
             return chatClient.prompt()
                     .system(PromptUtils.CODE_GENERATION_SYSTEM_PROMPT)
                     .user(userMessage)
+                    .tools(codeGenerationTools)
                     .advisors(advisorSpec -> {
                         advisorSpec.params(advisorParams);
                         advisorSpec.advisors(fileTreeContextAdvisor);

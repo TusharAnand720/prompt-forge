@@ -30,13 +30,11 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Long id) {
-        Long userId = 1L;
         return ResponseEntity.ok(projectService.getUserProjectById(id));
     }
 
     @PostMapping
     public ResponseEntity<ProjectResponse> createProject(@RequestBody @Valid ProjectRequest projectRequest) {
-        Long userId = 1L;
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(projectService.createProject(projectRequest));
     }
@@ -44,13 +42,11 @@ public class ProjectController {
     @PatchMapping("/{id}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long id,
                                                          @RequestBody @Valid ProjectRequest projectRequest) {
-        Long userId = 1L;
         return ResponseEntity.ok(projectService.updateProject(id, projectRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        Long userId = 1L;
         projectService.deleteProject(id);
         return ResponseEntity.noContent().build();
     }

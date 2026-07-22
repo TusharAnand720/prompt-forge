@@ -9,6 +9,7 @@ import com.tushar.projects.prompt_forge.mapper.ProjectFileMapper;
 import com.tushar.projects.prompt_forge.reposityory.ProjectFileRepository;
 import com.tushar.projects.prompt_forge.reposityory.ProjectRepository;
 import com.tushar.projects.prompt_forge.service.ProjectFileService;
+import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectFileServiceImpl implements ProjectFileService {
 
+    private static final String BUCKET_NAME = "projects";
+
     private final ProjectRepository projectRepository;
     private final ProjectFileRepository projectFileRepository;
 
@@ -45,8 +48,22 @@ public class ProjectFileServiceImpl implements ProjectFileService {
     }
 
     @Override
-    public FileContentResponse getFileContent(Long projectId, String path, Long userId) {
-        return null;
+    public FileContentResponse getFileContent(Long projectId, String path) {
+        String objectName = projectId + "/" + path;
+        try {
+            InputStream is = minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(BUCKET_NAME)
+                            .object(objectName)
+                            .build());
+
+            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            return new FileContentResponse(path, content);
+
+        } catch (Exception e) {
+            log.error("Failed to get file content for projectId: {}, path: {}", projectId, path, e);
+            throw new RuntimeException("Failed to get file content", e);
+        }
     }
 
     @Override
