@@ -3,7 +3,7 @@ version: '3.9'
 
 services:
   pgvector:
-    image: pgvector/pgvector:0.8.1-pg18-trixie
+    image: pgvector/pgvector:pg16
     container_name: pgvector-db-prompt-forge
     environment:
       POSTGRES_DB: testDB
