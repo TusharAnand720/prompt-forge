@@ -6,7 +6,11 @@ import com.tushar.projects.prompt_forge.error.ResourceNotFoundException;
 import com.tushar.projects.prompt_forge.reposityory.ProjectFileRepository;
 import com.tushar.projects.prompt_forge.reposityory.ProjectRepository;
 import com.tushar.projects.prompt_forge.service.ProjectTemplateService;
-import io.minio.*;
+import io.minio.CopyObjectArgs;
+import io.minio.CopySource;
+import io.minio.ListObjectsArgs;
+import io.minio.MinioClient;
+import io.minio.Result;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +27,7 @@ public class ProjectTemplateServiceImpl implements ProjectTemplateService {
 
     private static final String TEMPLATE_BUCKET = "project-starter-templates";
     private static final String TARGET_BUCKET = "projects";
-    private static final String TEMPLATE_NAME = "react-starter-template-master";
+    private static final String TEMPLATE_NAME = "react-vite-tailwind-daisyui-starter";
 
     private final MinioClient minioClient;
 

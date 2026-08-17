@@ -10,7 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -34,9 +34,9 @@ public class ChatEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false)
-    ChatMessage chatMessages;
+    ChatMessage chatMessage;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -48,7 +48,7 @@ public class ChatEvent {
     @Column(columnDefinition = "text")
     String content;
 
-    String filePath;
+    String filePath; // NULL unless FILE_EDIT
 
     @Column(columnDefinition = "text")
     String metadata;

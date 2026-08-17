@@ -1,15 +1,34 @@
 package com.tushar.projects.prompt_forge.entity;
 
-
 import com.tushar.projects.prompt_forge.enums.MessageRole;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -32,18 +51,16 @@ public class ChatMessage {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    MessageRole role;
+    MessageRole role; // USER, ASSISTANT
 
-    @OneToMany(mappedBy = "chatMessages", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("sequenceOrder ASC")
-    List<ChatEvent> events;
+    List<ChatEvent> events; // empty unless ASSISTANT role
 
-    @Column(columnDefinition = "text", nullable = false)
-    String content;
+    @Column(columnDefinition = "text")
+    String content; // NULL unless USER role
 
-//    String toolsCalls; // json array of tools called
-
-    Integer tokenUsed = 0;
+    Integer tokensUsed = 0;
 
     @CreationTimestamp
     Instant createdAt;

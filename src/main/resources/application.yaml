@@ -23,9 +23,9 @@ spring:
       base-url: https://openrouter.ai/api/
       chat:
         options:
-          #                    model: openai/gpt-oss-120b:free
-          #          model: nvidia/nemotron-3-super-120b-a12b:free
-          model: google/gemma-4-26b-a4b-it:free
+          #          model: openai/gpt-oss-120b:free
+          model: nvidia/nemotron-3-super-120b-a12b:free
+          #          model: google/gemma-4-26b-a4b-it:free
           temperature: 0.0
 
 jwt:
